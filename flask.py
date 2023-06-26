@@ -1,3 +1,8 @@
+from flask import Flask, request
+import os
+
+app = Flask(__name__)
+
 @app.route('/input', methods=['GET'])
 def get_input():
     return '''
@@ -7,16 +12,14 @@ def get_input():
         </form>
     '''
 
-
 @app.route('/input', methods=['POST'])
 def post_input():
     if 'file' in request.files:
         file = request.files['file']
-        # Save the file to a desired location
         file.save(os.path.join('uploads', file.filename))
-        # Process the file or folder as required
-        # Here, you can read the contents of the file, or iterate through the folder contents
-
         return 'File uploaded successfully.'
     else:
         return 'No file uploaded.'
+
+if __name__ == '__main__':
+    app.run(debug=True)
