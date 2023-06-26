@@ -1,5 +1,6 @@
 from flask import Flask, request
 import os
+import shutil
 
 app = Flask(__name__)
 
@@ -10,7 +11,7 @@ app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 def get_input():
     return '''
         <form method="POST" enctype="multipart/form-data">
-            <input type="file" name="file">
+            <input type="file" name="file" multiple webkitdirectory directory>
             <input type="submit" value="Upload">
         </form>
     '''
@@ -18,14 +19,19 @@ def get_input():
 @app.route('/input', methods=['POST'])
 def post_input():
     if 'file' in request.files:
-        file = request.files['file']
+        files = request.files.getlist('file')
+
         # Create the uploads folder if it doesn't exist
         if not os.path.exists(app.config['UPLOAD_FOLDER']):
             os.makedirs(app.config['UPLOAD_FOLDER'])
-        file.save(os.path.join(app.config['UPLOAD_FOLDER'], file.filename))
-        return 'File uploaded successfully.'
+
+        for file in files:
+            if file.filename:
+                file.save(os.path.join(app.config['UPLOAD_FOLDER'], file.filename))
+
+        return 'Files uploaded successfully.'
     else:
-        return 'No file uploaded.'
+        return 'No files uploaded.'
 
 if __name__ == '__main__':
     app.run(debug=True)
