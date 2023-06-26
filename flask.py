@@ -3,6 +3,9 @@ import os
 
 app = Flask(__name__)
 
+UPLOAD_FOLDER = 'uploads'
+app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+
 @app.route('/input', methods=['GET'])
 def get_input():
     return '''
@@ -16,7 +19,10 @@ def get_input():
 def post_input():
     if 'file' in request.files:
         file = request.files['file']
-        file.save(os.path.join('uploads', file.filename))
+        # Create the uploads folder if it doesn't exist
+        if not os.path.exists(app.config['UPLOAD_FOLDER']):
+            os.makedirs(app.config['UPLOAD_FOLDER'])
+        file.save(os.path.join(app.config['UPLOAD_FOLDER'], file.filename))
         return 'File uploaded successfully.'
     else:
         return 'No file uploaded.'
