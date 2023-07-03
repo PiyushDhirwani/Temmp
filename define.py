@@ -1,5 +1,11 @@
-from onefile import AbstractClassExample
+import configparser
 
-class DoSomething(AbstractClassExample):
-    def do_something(self,a,b):
-        return a+b
+# Read the properties from application.properties
+config = configparser.ConfigParser()
+config.read("application.properties")
+
+# Access the list property
+my_list = config.get("DEFAULT", "my_list").split(",")
+
+# Display the list
+print("List:", my_list)
