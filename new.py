@@ -1,6 +1,15 @@
+import os
+import pdfplumber
 from flask import Flask, request
 
 app = Flask(__name__)
+
+def extract_text_from_pdf(file):
+    text=""
+    with pdfplumber.open(file) as pdf:
+        for page in pdf.pages:
+            text += page.extract_text()
+    return text
 
 @app.route('/upload', methods=['POST'])
 def upload_file():
@@ -9,13 +18,14 @@ def upload_file():
 
     file = request.files['file']
 
-    # Perform any necessary processing on the file
-    # For example, you can save the file to a specific location
-    # or process its contents
+    if file.filename.endswith('.pdf'):
+        extracted_text = extract_text_from_pdf(file)
+        # Perform further processing on the extracted text
+        # For example, you can save it to a file or pass it to another function
+        # Here, we simply return the extracted text as the API response
+        return extracted_text
 
-    file.save('path/to/save/file')  # Save the file to a specific location
-
-    return 'File uploaded successfully'
+    return 'Unsupported file format', 400
 
 if __name__ == '__main__':
     app.run()
