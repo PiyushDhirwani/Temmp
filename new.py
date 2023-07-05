@@ -1,29 +1,21 @@
-import os
 from flask import Flask, request
 
 app = Flask(__name__)
 
-def process_file_or_folder(file_or_folder):
-    # Perform processing on the file or folder
-    # You can pass it to your desired function here
-    # For demonstration purposes, let's print the input
-    print("Processing:", file_or_folder)
-
 @app.route('/upload', methods=['POST'])
 def upload_file():
-    if 'file' not in request.files and 'folder' not in request.form:
-        return 'No file or folder parameter in the request', 400
+    if 'file' not in request.files:
+        return 'No file part in the request', 400
 
-    file = request.files.get('file')
-    folder = request.form.get('folder')
+    file = request.files['file']
 
-    if file:
-        process_file_or_folder(file)
-        return 'File processed successfully'
+    # Perform any necessary processing on the file
+    # For example, you can save the file to a specific location
+    # or process its contents
 
-    if folder:
-        process_file_or_folder(folder)
-        return 'Folder processed successfully'
+    file.save('path/to/save/file')  # Save the file to a specific location
+
+    return 'File uploaded successfully'
 
 if __name__ == '__main__':
     app.run()
