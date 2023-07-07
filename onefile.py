@@ -1,11 +1,11 @@
-from abc import ABC, abstractmethod
+import pdfplumber
 
-class AbstractClassExample(ABC):
 
-    @abstractmethod
-    def do_something(self):
-        pass
-
-    @abstractmethod
-    def do_something_else(self):
-        pass
+class Extracttestfrom:
+    @staticmethod
+    def extract_text_from_pdf(file):
+        text=""
+        with pdfplumber.open(file) as pdf:
+            for page in pdf.pages:
+                text += page.extract_text()
+        return text

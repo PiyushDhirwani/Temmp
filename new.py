@@ -1,25 +1,21 @@
 import os
-import pdfplumber
 from flask import Flask, request
-
+from onefile import Extracttestfrom
+print("hello")
 app = Flask(__name__)
 
-def extract_text_from_pdf(file):
-    text=""
-    with pdfplumber.open(file) as pdf:
-        for page in pdf.pages:
-            text += page.extract_text()
-    return text
-
-@app.route('/upload', methods=['POST'])
+@app.route('/uploadfile', methods=['POST'])
 def upload_file():
+    print(request.files)
+    print(request.files['file'])
     if 'file' not in request.files:
         return 'No file part in the request', 400
 
     file = request.files['file']
-
+    
     if file.filename.endswith('.pdf'):
-        extracted_text = extract_text_from_pdf(file)
+        extractor = Extracttestfrom()
+        extracted_text = extractor.extract_text_from_pdf(file)
         # Perform further processing on the extracted text
         # For example, you can save it to a file or pass it to another function
         # Here, we simply return the extracted text as the API response
