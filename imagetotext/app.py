@@ -1,7 +1,7 @@
 from flask import Flask, jsonify, request
 from flask import *
-from GetTextFromImage import GetTextFromPdf
-
+from coro import GetTextFromPDF
+from searching import Convertion
 app=Flask(__name__)
 
 @app.route('/')
@@ -11,7 +11,7 @@ def hello_world():
 @app.route('/upload', methods=['POST'])
 def upload_file():
 
-    pdfparser=GetTextFromPdf()
+    pdfparser=Convertion()
 
 
     if 'file' not in request.files:
@@ -19,8 +19,8 @@ def upload_file():
     
     file=request.files['file']
 
-    output=pdfparser.gettextimage(file)
-    return str(output)
+    output=pdfparser.wantsearch(pdf_path=file)
+    return output
 
 if __name__ == '__main__':
     app.run(debug=True)
