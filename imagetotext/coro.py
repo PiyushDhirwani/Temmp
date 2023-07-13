@@ -23,6 +23,7 @@ class GetTextFromPDF:
                 page_text = pytesseract.image_to_string(pil_image)
                 text += page_text
 
+        print(text)
             # Print the extracted text from all pages
         return text
 
