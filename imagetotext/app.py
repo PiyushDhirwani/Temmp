@@ -18,6 +18,7 @@ def upload_file():
         return 'No file part in the request', 400
     
     file=request.files['file']
+    print('--------------'+str(file)+'-----------------')
 
     output=pdfparser.wantsearch(pdf_path=file)
     return output
