@@ -65,13 +65,36 @@ int main() {
 
     // Density
 
-    
+    double rohv=0, rohl=0;
+    for (int i = 0; i < dataMap["y0"].size(); i++){
+        if (i<=Nmin){
+            rohv+=(i*exp(stod(dataMap["y0"][i])));
+        }
+        else{
+            rohl+=(i*exp(stod(dataMap["y0"][i])));
+        }
+    }
 
+    cout<<"rohv: "<<rohv<<endl;
+    cout<<"rohl: "<<rohl<<endl;
 
+    // Weighted Density
 
+    double rohv_=0, rohl_=0;
+    for (int i = 0; i < dataMap["y0"].size(); i++){
+        if (i<=Nmin){
+            rohv_+=(i*i*exp(stod(dataMap["y0"][i])));
+        }
+        else{
+            rohl_+=(i*i*exp(stod(dataMap["y0"][i])));
+        }
+    }
 
+    rohv_-=(rohv*rohv);
+    rohl_-=(rohl*rohl);
 
-
+    cout<<"rohv_: "<<rohv_<<endl;
+    cout<<"rohl_: "<<rohl_<<endl;
 
 
 
