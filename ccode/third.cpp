@@ -61,32 +61,57 @@ int main() {
         cout << local_minima[i].first << " " << local_minima[i].second << endl;
     }
 
-    int Nv=local_maxima[0].first, Nmin=local_minima[0].first, Nl=local_maxima[1].first;
+    int Nv=local_maxima[0].first, Nmin=local_minima[0].first, Nl=local_maxima[1].first, boxlenght=10;
 
+    double Surfacetension =(0.5*(local_maxima[0].second+local_maxima[1].second)-local_minima[0].second)/(2*boxlenght*boxlenght);
+
+    cout<<"surface tension: "<<Surfacetension<<endl;
     // Density
 
-    double rohv=0, rohl=0;
+
+    double rohv=0, rohl=0, lnpiavg=0;
     for (int i = 0; i < dataMap["y0"].size(); i++){
+        double lnpi=exp(stod(dataMap["y0"][i]));
         if (i<=Nmin){
-            rohv+=(i*exp(stod(dataMap["y0"][i])));
+            rohv+=(i*lnpi);
         }
         else{
-            rohl+=(i*exp(stod(dataMap["y0"][i])));
+            rohl+=(i*lnpi);
         }
+        lnpiavg+=lnpi;
     }
 
+    rohv/=lnpiavg;
+    rohl/=lnpiavg;
     cout<<"rohv: "<<rohv<<endl;
     cout<<"rohl: "<<rohl<<endl;
 
+
+    // Density with area
+    // double rohv_area=0, rohl_area=0;
+    // for (size_t i = 1; i < dataMap["y0"].size(); ++i) {
+    //     double deltaX = stod(dataMap["x"][i]) - stod(dataMap["x"][i-1]);
+    //     double avgY = (stod(dataMap["y0"][i]) + stod(dataMap["y0"][i-1])) / 2.0;
+    //     if (i<=Nmin){
+    //         rohv_area += (deltaX * avgY);
+    //     }
+    //     else{
+    //         rohl_area += (deltaX * avgY);
+    //     }
+    // }
+
+    // cout<<"rohv_area: "<<rohv_area<<endl;
+    // cout<<"rohl_area: "<<rohl_area<<endl;
     // Weighted Density
 
     double rohv_=0, rohl_=0;
     for (int i = 0; i < dataMap["y0"].size(); i++){
+        double lnpi=exp(stod(dataMap["y0"][i]));
         if (i<=Nmin){
-            rohv_+=(i*i*exp(stod(dataMap["y0"][i])));
+            rohv_+=(i*i*lnpi);
         }
         else{
-            rohl_+=(i*i*exp(stod(dataMap["y0"][i])));
+            rohl_+=(i*i*lnpi);
         }
     }
 
