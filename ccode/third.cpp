@@ -38,7 +38,7 @@ int main() {
     }
 
 
-
+    cout<<setprecision(13)<<endl;
     // Suface tension
     vector<pair<double, double> > local_maxima;
     vector<pair<double, double> > local_minima;
@@ -113,10 +113,14 @@ int main() {
         else{
             rohl_+=(i*i*lnpi);
         }
+        // lnpiavg+=lnpi;
     }
 
     rohv_-=(rohv*rohv);
     rohl_-=(rohl*rohl);
+
+    rohv_/=lnpiavg;
+    rohl_/=lnpiavg;
 
     cout<<"rohv_: "<<rohv_<<endl;
     cout<<"rohl_: "<<rohl_<<endl;
